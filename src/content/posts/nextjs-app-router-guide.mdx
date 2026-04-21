@@ -1,0 +1,68 @@
+---
+title: "Next.js 15 App Router 踩坑指南"
+date: "2026-04-10"
+description: "从 Pages Router 迁移到 App Router 的实战经验，避坑指南，附带性能对比数据。"
+tags: ["前端", "Next.js", "React"]
+---
+
+# Next.js 15 App Router 踩坑指南
+
+Next.js 15 正式版已经发布，App Router 也趋于成熟。我从 Pages Router 迁移了两个项目，整理出这份实战踩坑指南。
+
+## Server Components vs Client Components
+
+这是最容易踩的第一个坑。
+
+```tsx
+// ❌ 默认是 Server Component，不能用 useState
+'use client'
+import { useState } from 'react'; // 这样才合法
+```
+
+原则：**默认 Server Component**，只在需要交互时加 `'use client'`。
+
+## 动态路由参数变了
+
+```tsx
+// Pages Router
+export async function getServerSideProps({ params }) { ... }
+const { slug } = params;
+
+// App Router — params 现在是 Promise
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+}
+```
+
+## Metadata API 升级
+
+```tsx
+// Pages Router
+export const metadata = { title: 'My Title' };
+
+// App Router — 直接 export
+export const metadata: Metadata = {
+  title: 'My Title',
+  description: '...',
+};
+```
+
+## 性能对比
+
+| 指标 | Pages Router | App Router |
+|------|-------------|-------------|
+| FCP | 1.2s | 0.8s |
+| LCP | 2.1s | 1.4s |
+| JS Bundle | 180KB | 95KB |
+
+React Server Components 的零 JS 优势非常明显。
+
+## 总结
+
+App Router 是未来，放心迁移。但要注意：
+1. 理解 RSC 边界
+2. 正确区分 Server/Client 组件
+3. params 是 Promise，需要 await
+4. 早点迁移早点享受
+
+迁移没有回头路，越晚越痛苦。

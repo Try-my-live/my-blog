@@ -1,0 +1,63 @@
+---
+title: "程序员效率工具清单 2026"
+date: "2026-04-05"
+description: "我用过的最值得推荐的效率工具，覆盖编码、写作、终端、浏览器全链路。"
+tags: ["效率", "工具", "开发工具"]
+---
+
+# 程序员效率工具清单 2026
+
+工具这东西，适合自己的才是最好的。以下是我日常在用的，经过筛选后留下的。
+
+## 终端：Warp
+
+AI 时代的终端，比 iTerm2 更好用。Block 模式、命令自动补全、内置 AI 搜索。用过的都说回不去。
+
+## 编辑器：VS Code + Neovim
+
+VS Code 处理大项目，Neovim 处理轻量编辑。两者配合，效率翻倍。
+
+关键插件：
+- **Neovim** — 真正的 modal 编辑
+- **GitLens** — Git 历史一目了然
+- **Error Lens** — 错误直接显示在代码行
+- **Thunder Client** — API 测试，Postman 可以卸载了
+
+## AI 辅助：Claude + GitHub Copilot
+
+不是替代你写代码，而是替代你写 boilerplate。真正有价值的架构决策还是得自己来。
+
+## 浏览器：Arc
+
+分屏标签页管理、Spaces 隔离项目、命名空间收藏夹。用过之后 Chrome 就索然无味了。
+
+## 设计：Figma
+
+设计工具选 Figma 不会有错。多人协作、原型、Dev Mode，一条龙。
+
+## 笔记：Obsidian + IMA
+
+日常笔记用 Obsidian，本地存储，Markdown 格式，长期归档。临时收集用 IMA。
+
+## 终端工具链
+
+```bash
+# 查文档，不用再切窗口
+alias docs='function _docs(){ curl -s https://devdocs.io "$1" }; _docs'
+
+# 快速建项目模板
+alias newapp='npx create-next-app@latest'
+
+# Git 别名
+alias gs='git status'
+alias ga='git add .'
+alias gc='git commit -m'
+alias gp='git push'
+alias gco='git checkout'
+```
+
+## 总结
+
+工具不在多，在于用透。把每个工具的 20% 核心功能用好，远比装 100 个插件但只用 5% 功能强。
+
+定期清理工具箱，只留下真正高频使用的。
