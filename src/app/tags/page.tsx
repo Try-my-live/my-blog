@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getAllTags, getAllPosts } from '@/lib/posts';
 import Link from 'next/link';
-import { Tag } from 'lucide-react';
+import { Hash } from 'lucide-react';
 
 export const metadata: Metadata = { title: '标签' };
 
@@ -15,9 +15,9 @@ export default function TagsPage() {
   }, {});
 
   return (
-    <div className="pt-12 pb-16">
-      <h1 className="font-display font-extrabold text-4xl mb-3">标签</h1>
-      <p className="text-[var(--muted)] mb-10">共 {tags.length} 个标签</p>
+    <div className="blog-layout" style={{ display: 'block', maxWidth: 900 }}>
+      <h1 className="page-section-title">标签</h1>
+      <p className="text-sm text-[var(--muted)] mb-8">共 {tags.length} 个标签</p>
 
       {tags.length === 0 ? (
         <div className="text-center py-20 border border-dashed border-[var(--border)] rounded-2xl">
@@ -29,9 +29,9 @@ export default function TagsPage() {
             <Link
               key={tag}
               href={`/tags/${tag}`}
-              className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all duration-200 hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 text-sm px-4 py-2.5 rounded-full border border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:bg-[var(--accent-light)] transition-all"
             >
-              <Tag size={14} />
+              <Hash size={13} />
               {tag}
               <span className="text-xs opacity-60">({tagCounts[tag]})</span>
             </Link>

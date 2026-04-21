@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: { default: '代可行', template: '%s | 代可行' },
-  description: '程序员的独立博客，分享技术与思考',
+  description: '程序员的独立博客，分享前端、AI 与技术思考',
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-CN">
       <body>
         <Header />
-        <main className="max-w-5xl mx-auto px-6 min-h-[calc(100vh-4rem)]">
+        <main>
           {children}
         </main>
         <Footer />

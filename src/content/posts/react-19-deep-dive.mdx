@@ -1,0 +1,147 @@
+---
+title: React 19 核心特性深度解析
+description: 从 use() 到 Form Actions，React 19 带来的不仅是新 API，更是一种新的编程范式。
+date: 2026-04-20
+tags: [前端, React, Next.js]
+readingTime: 8 min read
+---
+
+## React 19 来了
+
+React 19 在 2024 年底正式发布。这个版本的核心不是性能优化，而是一套全新的**数据流**和**并发**原语。理解了这套原语，才能真正用好这个版本。
+
+## use()：打破 render 壁垒
+
+这是整个 19 版本最重要的新 API。
+
+```tsx
+function UserProfile({ userId }: { userId: string }) {
+  // 可以在 render 阶段读取 Promise，不再需要 .then() 或 useEffect
+  const user = use(fetchUser(userId));
+  return <div>{user.name}</div>;
+}
+```
+
+`use()` 的本质：**在 render 阶段挂起、等待、读取数据**。这意味着：
+- 不再需要 `useEffect` + `useState` 的数据获取样板代码
+- Suspense 可以自然包裹异步组件
+- 并发渲染时可以优雅地等待数据
+
+### 与 useState 的区别
+
+```tsx
+// 旧方式：useEffect + loading state
+function Old() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetchUser(id).then(u => { setUser(u); setLoading(false); });
+  }, [id]);
+  if (loading) return <Skeleton />;
+  return <div>{user.name}</div>;
+}
+
+// React 19：use() 直接读 Promise
+function New({ userId }: { userId: string }) {
+  const user = use(fetchUser(userId));
+  return <div>{user.name}</div>;
+}
+```
+
+## Form Actions：干掉 useState
+
+表单提交一直都是 React 的痛点之一。19 版本给出了标准答案：
+
+```tsx
+function SubscribeForm() {
+  async function submit(formData: FormData) {
+    'use server'; // 标记为 Server Action
+    await subscribe(formData.get('email') as string);
+    revalidatePath('/'); // 重新验证缓存
+  }
+
+  return (
+    <form action={submit}>
+      <input name="email" type="email" required />
+      <button type="submit">订阅</button>
+    </form>
+  );
+}
+```
+
+关键点：
+- `action` 接收一个**异步函数**，不用 `onSubmit` + `preventDefault`
+- `'use server'` 标记该函数在服务端执行（Next.js App Router 自动支持）
+- `revalidatePath()` 告诉 React："这个路径的数据变了，重新拉"
+
+### useActionState：处理表单状态
+
+```tsx
+import { useActionState } from 'react';
+
+function SubscribeForm() {
+  const [state, formAction, isPending] = useActionState(asyncFunction, initialState);
+  // state: { message: '' }
+  // formAction: 传给 form action
+  // isPending: 是否在请求中
+  return (
+    <form action={formAction}>
+      <button disabled={isPending}>
+        {isPending ? '提交中...' : '提交'}
+      </button>
+    </form>
+  );
+}
+```
+
+## Ref 作为 prop 直接传递
+
+```tsx
+// 之前
+<input ref={inputRef} />
+// 19: 通过 callback ref 传递
+<Input ref={inputRef} />
+
+// 现在可以直接写
+<input ref={inputRef} className="..." />
+```
+
+不再需要 `React.forwardRef()` 的样板代码。
+
+## useOptimistic：乐观更新
+
+在网络请求完成前先更新 UI，给用户即时反馈：
+
+```tsx
+import { useOptimistic } from 'react';
+
+function LikeButton({ likes }: { likes: number }) {
+  const [optimisticLikes, addOptimisticLikes] = useOptimistic(likes, (state, delta) => state + delta);
+
+  async function handleLike() {
+    addOptimisticLikes(1); // 立即 +1
+    await likePost();      // 后端请求
+  }
+
+  return (
+    <button onClick={handleLike}>
+      ❤️ {optimisticLikes}
+    </button>
+  );
+}
+```
+
+## 什么时候升级
+
+| 场景 | 建议 |
+|------|------|
+| 新项目 | 直接用 19 |
+| 现有 App Router 项目 | 升级，收益最大 |
+| 纯客户端 React 项目 | 评估 Form Actions 价值 |
+| 大量 class 组件 | 延后 |
+
+## 总结
+
+React 19 的核心变化是：**Server Components + Server Actions + 并发原语** 三者配合，把「数据获取」和「交互反馈」的控制权从客户端逐步迁移到服务端。
+
+这不是革命，是演进。但这个演进方向是对的。

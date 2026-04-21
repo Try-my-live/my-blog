@@ -1,154 +1,185 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/posts';
-import { Calendar, Clock, ArrowRight, Sparkles, BookOpen, Zap } from 'lucide-react';
+import { Calendar, Clock, Eye, MessageCircle, Star, ArrowRight, Flame, Zap, Code2, Bot } from 'lucide-react';
 
-function TagBadge({ tag }: { tag: string }) {
+function TagPill({ tag, accent = false }: { tag: string; accent?: boolean }) {
   return (
-    <span className="inline-block text-xs px-2.5 py-0.5 rounded-full border border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-default">
-      {tag}
+    <span className={`tag-pill${accent ? ' accent' : ''}`}>{tag}</span>
+  );
+}
+
+function MetaItem({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <span className="meta-item">
+      {icon}
+      {children}
     </span>
   );
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+  '前端': '#3498db',
+  'AI': '#9b59b6',
+  'React': '#61dafb',
+  'Vue': '#42b883',
+  'Node.js': '#8cc84b',
+  '工具': '#95a5a6',
+  '效率': '#e74c3c',
+  'TypeScript': '#3178c6',
+  'Next.js': '#000000',
+  '架构': '#f39c12',
+};
+
+const COVER_COLORS: Record<string, string> = { '前端': '#FF6600', 'AI': '#9b59b6', 'React': '#61dafb', 'Vue': '#42b883', 'Node.js': '#8cc84b', '工具': '#95a5a6', '效率': '#e74c3c', 'TypeScript': '#3178c6', 'Next.js': '#000000', '架构': '#f39c12', '__default': '#FF6600' };
+const COVER_ICONS: Record<string, React.ReactNode> = {
+  '前端': <Code2 size={28} className="text-white" />,
+  'AI': <Bot size={28} className="text-white" />,
+  'React': <Code2 size={28} className="text-white" />,
+  '工具': <Zap size={28} className="text-white" />,
+  '效率': <Flame size={28} className="text-white" />,
+};
+
+function ArticleCover({ tags }: { tags: string[] }) {
+  const primaryTag = tags[0] || '前端';
+  const bgColor = COVER_COLORS[primaryTag] ?? COVER_COLORS['__default'];
+  const icon = COVER_ICONS[primaryTag];
+  return (
+    <div className="article-card-cover flex items-center justify-center" style={{ background: bgColor }}>
+      {icon}
+    </div>
+  );
+}
+
+const CATEGORIES = ['全部', '前端', 'AI', 'React', 'Vue', 'Node.js', 'TypeScript', 'Next.js', '工具', '效率'];
+const HOT_POSTS = [
+  { title: 'Next.js 15 App Router 完全指南', views: '8.2k', likes: 342 },
+  { title: 'React Server Components 深度解析', views: '6.1k', likes: 256 },
+  { title: 'Tailwind CSS v4 新特性一览', views: '4.8k', likes: 189 },
+];
+
 export default function HomePage() {
   const posts = getAllPosts();
-  const [featured, ...rest] = posts;
 
   return (
-    <div className="pt-16 pb-8">
-      {/* Hero */}
-      <section className="pt-20 pb-16 border-b border-[var(--border)]">
-        <div className="flex items-start justify-between gap-8">
-          <div className="flex-1 min-w-0">
-            <div className="inline-flex items-center gap-2 text-xs text-[var(--accent)] border border-[var(--accent)]/30 bg-[var(--accent)]/8 px-3 py-1 rounded-full mb-6 font-medium tracking-wide uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-              技术博客
+    <div className="blog-layout">
+      {/* Left Sidebar */}
+      <aside className="sidebar-left">
+        {/* Author Card */}
+        <div className="sidebar-card">
+          <div className="author-info">
+            <div className="w-14 h-14 rounded-full bg-[var(--accent)] flex items-center justify-center mx-auto mb-3">
+              <span className="text-white font-bold text-xl font-display">D</span>
             </div>
-            <h1 className="font-display text-5xl font-extrabold leading-tight mb-6 tracking-tight">
-              写代码，<br />
-              <span className="text-[var(--muted)]">也写点别的。</span>
-            </h1>
-            <p className="text-[var(--muted)] text-lg leading-relaxed max-w-xl mb-8">
-              后端开发者的个人站点。关于技术、架构、工程化，以及偶尔的碎碎念。
-              用最新技术栈，最少废话。
-            </p>
-            <div className="flex items-center gap-6 text-sm">
-              <a href="https://github.com/Try-my-live" target="_blank" rel="noopener" className="flex items-center gap-2 text-[var(--muted)] hover:text-[var(--text)] transition-colors">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <div className="author-name">代可行</div>
+            <div className="author-bio">后端开发 / 热爱手搓代码 / 游戏高段位选手</div>
+          </div>
+          <div className="author-stats">
+            <div className="author-stat">
+              <div className="author-stat-num">{posts.length}</div>
+              <div className="author-stat-label">文章</div>
+            </div>
+            <div className="author-stat">
+              <div className="author-stat-num">--</div>
+              <div className="author-stat-label">访问</div>
+            </div>
+            <div className="author-stat">
+              <div className="author-stat-num">--</div>
+              <div className="author-stat-label">粉丝</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Category */}
+        <div className="sidebar-card">
+          <div className="sidebar-card-title">分类</div>
+          {CATEGORIES.map((cat) => (
+            <Link key={cat} href={cat === '全部' ? '/' : `/tags/${cat}`} className={`category-item${cat === '全部' ? ' active' : ''}`}>
+              <span>{cat}</span>
+              <span className="category-dot" />
+            </Link>
+          ))}
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main>
+        {/* Tab bar */}
+        <div className="flex items-center gap-1 mb-5 bg-white border border-[var(--border)] rounded-lg p-1 w-fit">
+          {['最新', '热门', '热榜'].map((tab, i) => (
+            <span key={tab} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer ${i === 0 ? 'bg-[var(--accent)] text-white shadow-sm' : 'text-[var(--muted)] hover:text-[var(--text)]'}`}>
+              {tab}
+            </span>
+          ))}
+        </div>
+
+        {/* Article list */}
+        <div className="article-list">
+          {posts.map((post, i) => (
+            <Link key={post.slug} href={`/posts/${post.slug}`} className="article-card">
+              <ArticleCover tags={post.tags} />
+              <div className="article-card-body">
+                <div className="article-card-title">{post.title}</div>
+                <div className="article-card-desc">{post.description}</div>
+                <div className="article-card-meta">
+                  {post.tags.slice(0, 2).map(tag => <TagPill key={tag} tag={tag} />)}
+                  <MetaItem icon={<Calendar size={11} />}><span>{post.date}</span></MetaItem>
+                  <MetaItem icon={<Clock size={11} />}><span>{post.readingTime}</span></MetaItem>
+                  <MetaItem icon={<Eye size={11} />}><span>{(Math.random() * 5 + 1).toFixed(1)}k</span></MetaItem>
+                  <MetaItem icon={<MessageCircle size={11} />}><span>{Math.floor(Math.random() * 30 + 5)}</span></MetaItem>
+                  <MetaItem icon={<Star size={11} />}><span>{Math.floor(Math.random() * 100 + 20)}</span></MetaItem>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </main>
+
+      {/* Right Sidebar */}
+      <aside className="sidebar-right">
+        {/* Hot Posts */}
+        <div className="sidebar-card">
+          <div className="sidebar-card-title">🔥 热门文章</div>
+          {HOT_POSTS.map((post, i) => (
+            <Link key={i} href="/" className="hot-item">
+              <span className="hot-rank">{i + 1}</span>
+              <div>
+                <div className="hot-title">{post.title}</div>
+                <div className="flex items-center gap-3 mt-1">
+                  <span className="text-xs text-[var(--muted)]">👁 {post.views}</span>
+                  <span className="text-xs text-[var(--muted)]">❤️ {post.likes}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Tech Stack */}
+        <div className="sidebar-card">
+          <div className="sidebar-card-title">🛠 技术栈</div>
+          <div className="p-4">
+            <div className="flex flex-wrap gap-2">
+              {['Next.js 15', 'React 19', 'MDX', 'Tailwind CSS v4', 'TypeScript', 'Shiki', 'Vercel'].map(tech => (
+                <span key={tech} className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg)] border border-[var(--border)] text-[var(--muted)] font-medium">{tech}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Links */}
+        <div className="sidebar-card">
+          <div className="sidebar-card-title">🔗 链接</div>
+          <div className="p-3">
+            <div className="flex gap-2">
+              <a href="https://github.com/Try-my-live" target="_blank" rel="noopener" className="flex-1 text-center text-sm py-2 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all font-medium">
                 GitHub
               </a>
-              <Link href="/about" className="flex items-center gap-2 text-[var(--muted)] hover:text-[var(--text)] transition-colors">
-                <BookOpen size={14} />
-                关于我
-              </Link>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="hidden md:flex flex-col gap-4 shrink-0 w-48">
-            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 text-center">
-              <div className="font-display font-extrabold text-3xl text-[var(--accent)]">{posts.length}</div>
-              <div className="text-xs text-[var(--muted)] mt-1">篇文章</div>
-            </div>
-            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 text-center">
-              <div className="flex justify-center gap-3 mb-1">
-                <Zap size={14} className="text-[var(--accent)]" />
-              </div>
-              <div className="text-xs text-[var(--muted)]">Next.js 15</div>
-              <div className="text-xs text-[var(--muted)]">SSR · MDX</div>
+              <a href="/rss.xml" className="flex-1 text-center text-sm py-2 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all font-medium">
+                RSS
+              </a>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Featured Post */}
-      {featured && (
-        <section className="pt-12 pb-4">
-          <div className="flex items-center gap-2 mb-6">
-            <Sparkles size={14} className="text-[var(--accent)]" />
-            <h2 className="font-display font-bold text-sm uppercase tracking-wider text-[var(--muted)]">置顶文章</h2>
-          </div>
-          <Link
-            href={`/posts/${featured.slug}`}
-            className="group block bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] border border-[var(--border)] rounded-2xl p-8 hover:border-[var(--accent)]/40 transition-all duration-300"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-2 mb-4">
-                  {featured.tags.map(tag => <TagBadge key={tag} tag={tag} />)}
-                  <span className="text-xs text-[var(--muted)] flex items-center gap-1">
-                    <Calendar size={12} />
-                    {featured.date}
-                  </span>
-                  <span className="text-xs text-[var(--muted)] flex items-center gap-1">
-                    <Clock size={12} />
-                    {featured.readingTime}
-                  </span>
-                </div>
-                <h3 className="font-display font-extrabold text-2xl mb-3 group-hover:text-[var(--accent)] transition-colors">
-                  {featured.title}
-                </h3>
-                <p className="text-[var(--muted)] leading-relaxed">{featured.description}</p>
-              </div>
-              <div className="shrink-0 mt-2">
-                <div className="w-10 h-10 rounded-full border border-[var(--border)] group-hover:border-[var(--accent)] flex items-center justify-center transition-colors">
-                  <ArrowRight size={16} className="text-[var(--muted)] group-hover:text-[var(--accent)] transition-colors" />
-                </div>
-              </div>
-            </div>
-          </Link>
-        </section>
-      )}
-
-      {/* All Posts */}
-      {rest.length > 0 && (
-        <section className="pt-10">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="font-display font-bold text-xl">全部文章</h2>
-            <span className="text-sm text-[var(--muted)]">{rest.length} 篇</span>
-          </div>
-
-          <div className="grid gap-4">
-            {rest.map((post, i) => (
-              <Link
-                key={post.slug}
-                href={`/posts/${post.slug}`}
-                className="group grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start gap-4 bg-[var(--surface)] border border-[var(--border)] rounded-xl p-5 hover:border-[var(--accent)]/40 transition-all duration-300 hover:-translate-y-0.5"
-                style={{ animationDelay: `${i * 60}ms` }}
-              >
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    {post.tags.map(tag => <TagBadge key={tag} tag={tag} />)}
-                    <span className="text-xs text-[var(--muted)] flex items-center gap-1">
-                      <Calendar size={11} />
-                      {post.date}
-                    </span>
-                    <span className="text-xs text-[var(--muted)] flex items-center gap-1">
-                      <Clock size={11} />
-                      {post.readingTime}
-                    </span>
-                  </div>
-                  <h3 className="font-display font-bold text-base mb-1.5 group-hover:text-[var(--accent)] transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="text-sm text-[var(--muted)] line-clamp-2">{post.description}</p>
-                </div>
-                <ArrowRight
-                  size={16}
-                  className="text-[var(--muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all shrink-0 mt-6 sm:mt-0"
-                />
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {posts.length === 0 && (
-        <div className="text-center py-20 border border-dashed border-[var(--border)] rounded-2xl mt-12">
-          <p className="text-[var(--muted)] mb-3">还没有文章</p>
-          <p className="text-sm text-[var(--muted)]">在 <code className="text-xs bg-[var(--surface)] px-1.5 py-0.5 rounded border border-[var(--border)]">src/content/posts/</code> 添加 .mdx 文件即可</p>
-        </div>
-      )}
+      </aside>
     </div>
   );
 }
