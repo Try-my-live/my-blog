@@ -70,7 +70,7 @@ export default function HomePage() {
             <div className="w-14 h-14 rounded-full bg-[var(--accent)] flex items-center justify-center mx-auto mb-3">
               <span className="text-white font-bold text-xl font-display">D</span>
             </div>
-            <div className="author-name">代可行</div>
+            <div className="author-name">Lucky Lee</div>
             <div className="author-bio">后端开发 / 热爱手搓代码 / 游戏高段位选手</div>
           </div>
           <div className="author-stats">
@@ -170,10 +170,10 @@ export default function HomePage() {
           <div className="sidebar-card-title">🔗 链接</div>
           <div className="p-3">
             <div className="flex gap-2">
-              <a href="https://github.com/Try-my-live" target="_blank" rel="noopener" className="flex-1 text-center text-sm py-2 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all font-medium">
+              <a href="https://github.com/Try-my-live" target="_blank" rel="noopener" className="flex-1 text-center text-sm py-2.5 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all font-medium">
                 GitHub
               </a>
-              <a href="/rss.xml" className="flex-1 text-center text-sm py-2 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all font-medium">
+              <a href="/rss.xml" className="flex-1 text-center text-sm py-2.5 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all font-medium">
                 RSS
               </a>
             </div>

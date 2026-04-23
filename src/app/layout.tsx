@@ -4,12 +4,12 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: { default: '代可行', template: '%s | 代可行' },
+  title: { default: 'Lucky Lee', template: '%s | Lucky Lee' },
   description: '程序员的独立博客，分享前端、AI 与技术思考',
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
-    siteName: '代可行',
+    siteName: 'Lucky Lee',
   },
 };
 

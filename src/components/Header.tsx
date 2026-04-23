@@ -11,13 +11,13 @@ export default function Header() {
             <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
               <span className="text-white font-bold text-sm font-display">D</span>
             </div>
-            <span className="font-display font-bold text-base text-[var(--text)]">代可行</span>
+            <span className="font-display font-bold text-base text-[var(--text)]">Lucky Lee</span>
           </Link>
 
           {/* Search */}
-          <div className="flex-1 max-w-xl">
+          <div className="flex-1 max-w-xl mx-4">
             <div className="relative">
-              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
+              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)] z-10 pointer-events-none" />
               <input
                 type="text"
                 placeholder="搜索文章..."

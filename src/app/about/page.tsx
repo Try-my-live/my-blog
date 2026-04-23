@@ -12,10 +12,10 @@ export default function AboutPage() {
         {/* Avatar + Intro */}
         <div className="flex items-start gap-6">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--accent)] to-amber-600 flex items-center justify-center shrink-0">
-            <span className="text-3xl font-display font-extrabold text-black">代</span>
+            <span className="text-3xl font-display font-extrabold text-black">L</span>
           </div>
           <div>
-            <h2 className="font-display font-bold text-xl mb-1">代可行</h2>
+            <h2 className="font-display font-bold text-xl mb-1">Lucky Lee</h2>
             <p className="text-[var(--muted)] text-sm mb-3">后端开发 · 热爱手搓</p>
             <div className="flex gap-3">
               <a href="https://github.com" target="_blank" rel="noopener" className="text-[var(--muted)] hover:text-[var(--text)] transition-colors" aria-label="GitHub">
