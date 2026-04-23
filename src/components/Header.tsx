@@ -17,11 +17,11 @@ export default function Header() {
           {/* Search */}
           <div className="flex-1 max-w-xl mx-4">
             <div className="relative">
-              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)] z-10 pointer-events-none" />
+              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)] z-10 pointer-events-none" style={{ color: 'var(--muted)' }} />
               <input
                 type="text"
                 placeholder="搜索文章..."
-                className="w-full h-9 pl-9 pr-4 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-sm text-[var(--text)] placeholder-[var(--muted)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/20 transition-all"
+                className="w-full h-9 pl-10 pr-4 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-sm text-[var(--text)] placeholder-[var(--muted)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/20 transition-all"
               />
             </div>
           </div>

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/posts';
-import { Calendar, Clock, Eye, MessageCircle, Star, ArrowRight, Flame, Zap, Code2, Bot } from 'lucide-react';
+import { Calendar, Clock, Eye, MessageCircle, Star, ArrowRight, Flame, Zap, Code2, Bot, Brain, Sparkles, Cpu, Globe, BookOpen, MessageSquare, Github, ExternalLink } from 'lucide-react';
 
 function TagPill({ tag, accent = false }: { tag: string; accent?: boolean }) {
   return (
@@ -56,6 +56,59 @@ const HOT_POSTS = [
   { title: 'React Server Components 深度解析', views: '6.1k', likes: 256 },
   { title: 'Tailwind CSS v4 新特性一览', views: '4.8k', likes: 189 },
 ];
+
+// AI 加油站数据
+const AI_RESOURCES = {
+  title: '⚡ AI加油站',
+  categories: [
+    {
+      name: '🤖 主流大模型',
+      items: [
+        { name: 'ChatGPT', desc: 'OpenAI 出品', url: 'https://chat.openai.com', icon: '🧠' },
+        { name: 'Claude', desc: 'Anthropic 出品', url: 'https://claude.ai', icon: '💎' },
+        { name: 'Gemini', desc: 'Google AI', url: 'https://gemini.google.com', icon: '✨' },
+        { name: 'Perplexity', desc: 'AI 搜索引擎', url: 'https://www.perplexity.ai', icon: '🔍' },
+      ]
+    },
+    {
+      name: '🎨 Vibe Coding',
+      items: [
+        { name: 'Cursor', desc: 'AI 代码编辑器', url: 'https://cursor.sh', icon: '⌨️' },
+        { name: 'Windsurf', desc: 'AI 编程助手', url: 'https://windsurf.ai', icon: '🏄' },
+        { name: 'v0', desc: 'Vercel AI UI 生成', url: 'https://v0.dev', icon: '🎯' },
+        { name: 'Bolt.new', desc: 'AI 全栈开发', url: 'https://bolt.new', icon: '⚡' },
+        { name: 'Loveable', desc: 'AI 快速开发', url: 'https://loveable.dev', icon: '❤️' },
+      ]
+    },
+    {
+      name: '🛠 AI 工具集',
+      items: [
+        { name: 'Notion AI', desc: '智能笔记', url: 'https://notion.so', icon: '📝' },
+        { name: 'Midjourney', desc: 'AI 绘画', url: 'https://www.midjourney.com', icon: '🎨' },
+        { name: 'Runway', desc: 'AI 视频', url: 'https://runway.ml', icon: '🎬' },
+        { name: 'ElevenLabs', desc: 'AI 语音合成', url: 'https://elevenlabs.io', icon: '🎙️' },
+        { name: 'GitHub Copilot', desc: '代码助手', url: 'https://github.com/features/copilot', icon: '👨‍💻' },
+      ]
+    },
+    {
+      name: '📚 学习资源',
+      items: [
+        { name: 'AI 论文', desc: '最新论文', url: 'https://paperswithcode.com', icon: '📄' },
+        { name: 'Hugging Face', desc: 'AI 模型库', url: 'https://huggingface.co', icon: '🤗' },
+        { name: 'DeepLearning.AI', desc: 'AI 课程', url: 'https://deeplearning.ai', icon: '🎓' },
+        { name: 'LangChain', desc: 'AI 开发框架', url: 'https://langchain.com', icon: '🔗' },
+      ]
+    },
+    {
+      name: '💬 AI 社区',
+      items: [
+        { name: 'Vercel AI', desc: 'AI 开发社区', url: 'https://vercel.com/ai', icon: '🌐' },
+        { name: 'AI 研习社', desc: '中文 AI 社区', url: 'https://www.yanxishe.com', icon: '📖' },
+        { name: 'Reddit AI', desc: '英文 AI 社区', url: 'https://reddit.com/r/ArtificialIntelligence', icon: '💻' },
+      ]
+    }
+  ]
+};
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -163,6 +216,34 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* AI 加油站 */}
+        <div className="sidebar-card">
+          <div className="sidebar-card-title">{AI_RESOURCES.title}</div>
+          {AI_RESOURCES.categories.map((category, idx) => (
+            <div key={category.name} className={idx !== 0 ? 'border-t border-[var(--border)]' : ''}>
+              <div className="px-4 py-2.5 text-xs font-semibold text-[var(--accent)] uppercase tracking-wide">{category.name}</div>
+              <div className="px-2 pb-2">
+                <div className="flex flex-wrap gap-1.5">
+                  {category.items.map((item) => (
+                    <a 
+                      key={item.name}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-xs text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"
+                      title={item.desc}
+                    >
+                      <span>{item.icon}</span>
+                      <span className="font-medium">{item.name}</span>
+                      <ExternalLink size={10} className="opacity-40" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Links */}
