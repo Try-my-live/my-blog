@@ -104,7 +104,7 @@ export default function HomePage() {
       {/* Main Content */}
       <main>
         {/* Tab bar */}
-        <div className="flex items-center gap-1 mb-5 bg-white border border-[var(--border)] rounded-lg p-1 w-fit">
+        <div className="flex items-center gap-1 mb-5 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-1 w-fit">
           {['最新', '热门', '热榜'].map((tab, i) => (
             <span key={tab} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer ${i === 0 ? 'bg-[var(--accent)] text-white shadow-sm' : 'text-[var(--muted)] hover:text-[var(--text)]'}`}>
               {tab}

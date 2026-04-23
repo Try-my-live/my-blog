@@ -3,7 +3,7 @@ import { Search, Bell } from 'lucide-react';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-[var(--border)] shadow-sm">
+    <header className="sticky top-0 z-50 bg-[var(--surface)]/80 backdrop-blur-md border-b border-[var(--border)] shadow-sm">
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 16px' }}>
         <div className="h-14 flex items-center justify-between gap-4">
           {/* Logo */}
